@@ -67,7 +67,7 @@ Size scale on the 1920×1080 canvas (already set by the template; do not overrid
 - `transition: 'fade'`, `hash: true`, `slideNumber: 'c/t'`, `controls: true`, `progress: true`.
 - Plugins: `RevealHighlight` (code) and `RevealNotes` (speaker view, key **S**).
 - Progress bar: 3px, ice blue. Controls: 50% opacity, ice blue on hover.
-- Personal logo: fixed top-left, 72×72px, circular crop, 80% opacity (100% on hover). It hides itself automatically if the file is missing.
+- Personal logo: fixed top-left, 82×82px, circular crop, 80% opacity (100% on hover). It hides itself automatically if the file is missing.
 
 ---
 
@@ -490,7 +490,7 @@ Replace only: `[DECK_TITLE]`, the content of `<div class="slides">`, and the `AN
 <body>
 
     <a href="#" class="brand-logo">
-        <img src="/Users/alejandrocalderon/Pictures/Debuggeando%20Ideas/Logo-V2.png" alt="Debuggeando Ideas" width="72" height="72"
+        <img src="/Users/alejandrocalderon/Pictures/Debuggeando%20Ideas/Logo-V2.png" alt="Debuggeando Ideas" width="82" height="82"
              onerror="this.parentElement.style.display='none'">
     </a>
 
