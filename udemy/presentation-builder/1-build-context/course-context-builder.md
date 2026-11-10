@@ -1,0 +1,177 @@
+<!-- role: builder | stage: 1 of 2 | output: 03_Course_Context.md -->
+
+# Course Context Builder
+
+Project: **Debuggeando Ideas** — technical teaching presentations.
+
+## 0. What you are doing
+
+You are in **Stage 1 (build)**. Your only job is to produce ONE file: `03_Course_Context.md`, a **compact summary of the whole course**.
+You do NOT design presentations, slide outlines, learning objectives or analogies. The instructor decides each presentation later and sends the details by chat.
+
+| File | Role | Changes per course? | Available to you now? |
+|---|---|---|---|
+| `01_Tech_Engine.md` | Rule — HOW to build the HTML (components 7.x) | No (constant) | No |
+| `02_Pedagogy_Style.md` | Rule — HOW to teach (principles, lesson arc) | No (constant) | No |
+| `course-context-builder.md` (this file) | Builder — HOW to create the context file | No (constant) | Yes |
+| Instructor inputs (PRD, syllabus, notes…) | Input — WHAT the course is about | Yes | Sent in the next prompts |
+| `03_Course_Context.md` | Output — summary of the course | Yes | You generate it |
+
+### How the output is used (Stage 2)
+
+A Claude project holds `01` + `02` + `03`. For each presentation, the instructor pastes a **brief** in the chat (topic, depth, analogies, focus). The presentation builder uses `03` to:
+- Know what the course builds and why (business case).
+- Use the exact technologies, versions and names of the project.
+- Connect examples to the project (e.g. "semantic search between the Python and JavaScript style guides").
+- Respect the course philosophy and conventions.
+- Check that the brief does not contradict the project.
+
+So `03` must be **broad and short**: everything the course touches, one line per item. Deep technical detail arrives in the brief, not here.
+
+---
+
+## 1. Workflow
+
+1. **Acknowledge** in the instructor's language, max 3 lines: ready, waiting for inputs.
+2. **Receive inputs.** They may come across several prompts. Do not generate until the instructor says the inputs are complete (e.g. "listo", "genera").
+3. **Gap check.** Max 5 numbered one-line questions, only for REQUIRED fields that cannot be derived. Everything else: mark `[VERIFY]` and continue. The first line is always the detected deck language (see section 3).
+4. **Generate** `03_Course_Context.md` with the template in section 4.
+5. **Report** in the instructor's language, max 5 lines: size of the file, number of `[VERIFY]` items, new domains added, anything from the inputs left out and why.
+
+---
+
+## 2. Contract with `01` (interface only)
+
+You only need component IDs to fill the domain tool rules. Never invent IDs.
+
+| ID | Component |
+|---|---|
+| 7.5 | macOS code window |
+| 7.6 | Mermaid diagram |
+| 7.7 | Icons / entity row |
+| 7.9 | Dual coding split (analogy image) |
+| 7.10 | Step animation (block nodes) |
+| 7.10b | Memory cells |
+
+### Base domain → tool rules
+
+| Domain | Examples | Main tool | Forbidden |
+|---|---|---|---|
+| Architecture & system design | Microservices, networks, auth flows, caching | Mermaid [7.6] | Step animation for flows |
+| Algorithms & data structures | Sorting, heaps, graphs, linked lists | Step animation [7.10] | Mermaid |
+| Language fundamentals & memory | Pointers, references, stack/heap | Memory cells [7.10b] + code [7.5] | Mermaid for memory |
+| Backend programming | Java, Spring, Python, Go services | Code windows [7.5] with line steps | Long theory before code |
+
+**New domain rule:** if the course covers a subject none of these fit, add a row marked `(new)`, choose tools only from the table above, and mention it in the report.
+
+---
+
+## 3. Content rules
+
+- **Summary, not a manual.** One line per item. No paragraphs. No code blocks longer than 3 lines.
+- **Size budget:** aim for 8–15 KB. If you exceed 15 KB, cut detail (keep names, versions and one-line facts; drop explanations).
+- **Never include:** slide outlines, per-module learning objectives, analogies, quiz ideas, HTML/CSS/JS, or pedagogical principles. Those belong to the brief, `01` or `02`.
+- **Do not invent facts.** Every fact comes from the inputs or an official source. If unsure, append `[VERIFY]`.
+- **Exact names:** keep versions, class names, endpoints, ports and IDs exactly as written in the inputs.
+- **Deck language is REQUIRED.** Resolve in this order:
+  1. Stated by the instructor or in the inputs → use it.
+  2. Otherwise infer it from the language the instructor writes in (Spanish → `es-419`, Portuguese → `pt-BR`, English → `en-US`), refining from cues ("vosotros", "ordenador" → `es-ES`).
+  3. State it as the first gap-check line, e.g. `Idioma detectado: es-419. ¿Correcto?`, and continue unless corrected.
+- **Language of the file:** structure and field names in English. Content that may appear on slides (business case, principles, glossary definitions) in the deck language.
+
+---
+
+## 4. Output template (`03_Course_Context.md`)
+
+````markdown
+<!-- role: output | generated by: course-context-builder.md | stage: 2 input -->
+<!-- read with: 01_Tech_Engine.md + 02_Pedagogy_Style.md -->
+
+# 03 — Course Context: [Course name]
+
+## A. How this file works (do not edit)
+
+This file is a **summary of the whole course**: what it builds, why, with which technologies, and under which philosophy. It does NOT define presentations. Each presentation is defined by the instructor's brief in the chat; use this file to align that brief with the project.
+
+| File | Answers |
+|---|---|
+| `01_Tech_Engine.md` | HOW to build each component |
+| `02_Pedagogy_Style.md` | HOW to teach and sequence |
+| `03_Course_Context.md` (this file) | WHAT the course is about: business case, stack, names, philosophy |
+| Brief (chat) | WHAT this presentation covers and how deep |
+
+Priority: project facts, names and versions → this file. Topic, depth and analogies → the brief. Sequencing → `02`. Code of components → `01`.
+If the brief contradicts this file, point it out in one line before the draft.
+
+## B. Course card (REQUIRED)
+
+| Field | Value |
+|---|---|
+| Course | |
+| One-line pitch | |
+| Audience level | |
+| Prerequisites | |
+| Deck language (locale) | [e.g. es-419] |
+| Tone | [e.g. conversational, "tú"] |
+| Language(s) of code | |
+
+## C. Domain tool rules (REQUIRED)
+
+[Base table from the builder + new rows marked `(new)`.]
+
+## D. Business case (REQUIRED)
+
+- Company (real or fictional):
+- Problem today: [1–2 lines]
+- Solution the course builds: [1–2 lines]
+- Final result: [what exists at the end of the course]
+
+## E. What the course builds (REQUIRED)
+
+- Architecture in one line:
+- Components / services: [list: name · role · port or runtime, one line each]
+- Main flow: [numbered steps, one line each, max 8]
+- Possible outcomes / states: [list]
+- Modules: [table: module → what is built, one line each]
+
+## F. Tech stack and versions (REQUIRED)
+
+| Technology | Version | Used for |
+|---|---|---|
+
+## G. Course philosophy (REQUIRED)
+
+[Numbered principles, one line each, quoted as the instructor wrote them.]
+
+## H. Conventions
+
+- Naming: [list]
+- Code style: [list]
+- Demo data: [IDs, sample files, tickets, users… one line each]
+
+## I. Glossary
+
+| Term | Meaning in this course (one line) |
+|---|---|
+
+[Only terms the course actually uses. Define them in project terms, e.g. "RAG: recupera guías de estilo desde pgvector antes de traducir".]
+
+## J. Sources (official)
+
+[URLs. Only these may justify facts not stated in the brief.]
+
+## K. Open items
+
+[Every `[VERIFY]` in the file: section, item, what to check.]
+````
+
+---
+
+## 5. Self-check before delivering
+
+- [ ] Starts with the two role comments; section A copied verbatim.
+- [ ] Sections B–G filled; no slide outlines, objectives, analogies or quizzes anywhere.
+- [ ] One line per item; file size within 8–15 KB.
+- [ ] Versions and names exactly as in the inputs.
+- [ ] Every uncertain fact has `[VERIFY]` and appears in section K.
+- [ ] Deck language and locale set in section B.
