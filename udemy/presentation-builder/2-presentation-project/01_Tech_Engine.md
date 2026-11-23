@@ -40,6 +40,15 @@ Declared once in `:root` (already in the template). Reference them with `var(--n
 | `--accent-ice` | `#88C0D0` | Primary accent: cover title, kicker, inline-code text, progress bar, active/focused element |
 | `--accent-sage` | `#8FBCBB` | Success: correct answer, HIT, successful connection, "good" path |
 | `--accent-salmon` | `#E3A89D` | Error / alert: wrong answer, MISS, failure, eviction, "bad" path |
+| `--accent-forest` | `#86A67C` | Secondary (bosque): the practical side, what we do in the course (callouts about the project, the practical takeaway card) |
+| `--accent-bark` | `#F5E1CE` | Secondary (tronco): the real-world object of an analogy (carta, laptop, cable…) |
+
+Color roles (Nordic landscape), always the same meaning:
+- Ice = technical concept and focus. Snow/grey (`--text-color`, `#C4CBD8`) = text.
+- Bark = real-world side of an analogy; in a mapping bullet write `<bark>objeto</bark> = <ice>concepto</ice>`.
+- Forest = practical / course-specific emphasis.
+- Sage and salmon = ONLY success and error. Forest and bark never mean success or error.
+- Secondary colors are occasional: max 1–2 elements per slide, and only in text (`tone-*`) or takeaway icons. Never in Mermaid, code or animations.
 
 Fixed secondary shades (do not use elsewhere):
 - `#C4CBD8` — subtitle (`h3`) and secondary text.
@@ -134,6 +143,8 @@ Replace only: `[DECK_TITLE]`, the content of `<div class="slides">`, and the `AN
             --accent-ice: #88C0D0;
             --accent-sage: #8FBCBB;
             --accent-salmon: #E3A89D;
+            --accent-forest: #86A67C;
+            --accent-bark: #F5E1CE;
 
             /* Reveal theme variables (1920x1080 canvas) */
             --r-background-color: var(--bg-color);
@@ -187,6 +198,8 @@ Replace only: `[DECK_TITLE]`, the content of `<div class="slides">`, and the `AN
         .tone-ice { color: var(--accent-ice); }
         .tone-sage { color: var(--accent-sage); }
         .tone-alert { color: var(--accent-salmon); }
+        .tone-forest { color: var(--accent-forest); }
+        .tone-bark { color: var(--accent-bark); }
 
         .reveal ul.bullets { list-style: none; margin: 0; padding: 0; }
         .reveal ul.bullets li {
@@ -323,7 +336,7 @@ Replace only: `[DECK_TITLE]`, the content of `<div class="slides">`, and the `AN
             border: 1px solid var(--struct-color);
             background: #262B35;
         }
-        .reveal .analogy-visual img { width: 100%; height: 100%; object-fit: cover; margin: 0; }
+        .reveal .analogy-visual img { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: cover; margin: 0; }
         .ai-placeholder {
             display: none;
             height: 100%;
@@ -485,6 +498,8 @@ Replace only: `[DECK_TITLE]`, the content of `<div class="slides">`, and the `AN
         }
         .takeaway .ph { display: block; font-size: 60px; color: var(--accent-ice); margin-bottom: 22px; }
         .takeaway.sage .ph { color: var(--accent-sage); }
+        .takeaway.forest .ph { color: var(--accent-forest); }
+        .takeaway.bark .ph { color: var(--accent-bark); }
     </style>
 </head>
 <body>
@@ -646,9 +661,11 @@ Use on every content slide. The kicker is a short section label in Spanish, uppe
     <p class="kicker">ÁREA · SUBÁREA</p>
     <h1 style="color: var(--accent-ice);">Título del tema</h1>
     <h3>Subtítulo en una línea</h3>
-    <p class="muted" style="font-size: 26px; margin-top: 70px;">Debuggeando Ideas · Módulo N</p>
+    <p class="muted" style="font-size: 26px; margin-top: 70px;">Debuggeando Ideas</p>
 </section>
 ```
+
+Never show module numbers on the cover or anywhere in the deck.
 
 ### 7.3 Bullets
 
@@ -661,7 +678,7 @@ Use on every content slide. The kicker is a short section label in Spanish, uppe
 
 To reveal bullets one by one, add `class="fragment fade-up"` to each `<li>`.
 
-Emphasis classes: `tone-ice`, `tone-sage`, `tone-alert`, `muted`, and `<strong>`.
+Emphasis classes: `tone-ice`, `tone-sage`, `tone-alert`, `tone-forest`, `tone-bark`, `muted`, and `<strong>`. Use `tone-forest` / `tone-bark` only per the color roles in section 2.
 
 ### 7.4 Inline code (inside text or titles)
 
@@ -784,8 +801,8 @@ Left column: theory (header + bullets) OR a code window OR a diagram. Right colu
             <p class="kicker">02 · LA ANALOGÍA</p>
             <h2>Título de la analogía</h2>
             <ul class="bullets">
-                <li>Idea 1</li>
-                <li>Idea 2</li>
+                <li><span class="tone-bark">Objeto real</span> = <span class="tone-ice">concepto</span></li>
+                <li><span class="tone-bark">Otro objeto</span> = <span class="tone-ice">otra pieza</span></li>
             </ul>
         </div>
         <div class="analogy-visual">
@@ -807,6 +824,7 @@ Rules:
 - The same `[slug]` appears in the `src` and in `.path`.
 - If the image file does not exist yet, the slide automatically shows the prompt instead. Never omit the placeholder.
 - Image aspect ratio: 4:3.
+- Mapping bullets: the real-world object in `tone-bark`, the concept in `tone-ice`.
 
 ### 7.10 Step animation (GSAP, click-driven)
 
@@ -1040,13 +1058,13 @@ Rules: 3 or 4 options, exactly one with `true`, and do not always put the correc
     <h2>Tres ideas para llevarte</h2>
     <div class="takeaways">
         <div class="takeaway"><i class="ph ph-lightning"></i>Idea clave 1</div>
-        <div class="takeaway"><i class="ph ph-clock-counter-clockwise"></i>Idea clave 2</div>
-        <div class="takeaway sage"><i class="ph ph-code"></i>Idea clave 3</div>
+        <div class="takeaway bark"><i class="ph ph-clock-counter-clockwise"></i>Idea clave 2</div>
+        <div class="takeaway forest"><i class="ph ph-code"></i>Idea clave 3</div>
     </div>
 </section>
 ```
 
-Exactly 3 cards. `sage` modifier is optional, for the most practical idea.
+Exactly 3 cards. Default palette: first card ice (no modifier), second `bark`, third `forest` (the most practical idea). `sage` stays available but is not the default.
 
 ### 7.13 Speaker notes
 
@@ -1071,4 +1089,6 @@ Exactly 3 cards. `sage` modifier is optional, for the most practical idea.
 - [ ] Memory and pointer animations use `.mem-cell` (7.10b); arrays and lists use `.anim-node` (7.10).
 - [ ] Completion problems mark the gap with `/* ??? */` and are followed by a solution slide.
 - [ ] Focal Mermaid highlighting uses only the `dim` / `active` classDefs from 7.6.
+- [ ] Forest and bark used only per section 2 roles (max 1–2 per slide, never for success/error).
+- [ ] No module number anywhere.
 - [ ] All visible text is in Spanish; no emojis.
